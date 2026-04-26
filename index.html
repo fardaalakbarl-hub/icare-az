@@ -46,79 +46,37 @@ button{padding:8px;background:#2c6bed;color:white;border:none;}
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const SUPABASE_URL = "https://irwhnuywppwsfcluaelt.supabase.co"";
-const SUPABASE_KEY = "sb_publishable_3-DgPo74tGElnm0G6qko5Q_8vBpS46M";
+const SUPABASE_URL = "https://irwhnuywppwsfcluaelt.supabase.co";
+const SUPABASE_KEY = "sb_..."; // səndə olan key
 
-const supabase = window.supabase.createClient(https://supabase.com/dashboard/project/irwhnuywppwsfcluaelt/settings/api-keys,sb_publishable_3-DgPo74tGElnm0G6qko5Q_8vBpS46M );
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let currentUser = "user" + Math.floor(Math.random()*1000);
-
-// ADD CAR
 async function addCar(){
+  const brand = document.getElementById("brand").value;
+  const model = document.getElementById("model").value;
+  const price = document.getElementById("price").value;
 
-const brand = document.getElementById("brand").value;
-const model = document.getElementById("model").value;
-const price = document.getElementById("price").value;
-const fuel = document.getElementById("fuel").value;
-const location = document.getElementById("location").value;
-const phone = document.getElementById("phone").value;
+  if(!brand || !model || !price){
+    alert("Boş qoyma");
+    return;
+  }
 
-const file = document.getElementById("image").files[0];
+  const { error } = await supabase
+    .from("cars")
+    .insert([{ brand, model, price }]);
 
-if(!brand || !model || !price || !file){
-alert("ozuvu qoyma!");
-return;
+  if(error){
+    console.log(error);
+    alert("Xəta oldu");
+  } else {
+    alert("Əlavə olundu");
+  }
 }
 
-const reader = new FileReader();
-
-reader.onload = async function(e){
-
-await supabase.from("cars").insert([{
-brand,model,price,fuel,location,phone,
-owner: currentUser,
-image: e.target.result
-}]);
-
-loadCars();
-};
-
-reader.readAsDataURL(file);
-}
-
-// LOAD
-async function loadCars(){
-
-const { data } = await supabase.from("cars").select("*");
-
-render(data);
-}
-
-// RENDER
-function render(data){
-
-const list = document.getElementById("list");
-list.innerHTML = "";
-
-data.forEach(car=>{
-list.innerHTML += `
-<div class="card">
-<img src="${car.image}">
-<h3>${car.brand} ${car.model}</h3>
-<p>${car.price} AZN</p>
-<p>${car.fuel}</p>
-<p>${car.location}</p>
-<p>${car.phone}</p>
-</div>
-`;
-});
-
-}
-
-// START
-loadCars();
-
+window.addCar = addCar;
+</script>
 </script>
 
 </body>
