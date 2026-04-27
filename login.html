@@ -2,48 +2,93 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>Icare.az Login</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI;
+  background:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box{
+  width:320px;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 5px 25px rgba(0,0,0,0.1);
+}
+
+h2{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border:1px solid #ccc;
+  border-radius:8px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  background:#2c6bed;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+</style>
 </head>
 
-<body style="font-family:Arial;background:#2c6bed;display:flex;justify-content:center;align-items:center;height:100vh;">
+<body>
 
-<div style="background:white;padding:20px;border-radius:10px;width:280px;">
-<h3>Hesab</h3>
+<div class="box">
+<h2>🚗 Icare.az</h2>
 
-<input id="name" placeholder="Ad" style="width:100%;padding:8px;margin:5px 0;">
-<button onclick="getCode()" style="width:100%;padding:8px;">Kod al</button>
+<input id="name" placeholder="Ad">
+<button onclick="getCode()">Kod al</button>
 
-<input id="loginName" placeholder="Ad" style="width:100%;padding:8px;margin:5px 0;">
-<input id="code" placeholder="Kod" style="width:100%;padding:8px;margin:5px 0;">
-<button onclick="login()" style="width:100%;padding:8px;">Daxil ol</button>
+<input id="loginName" placeholder="Ad">
+<input id="code" placeholder="Kod">
+<button onclick="login()">Daxil ol</button>
 
 <p id="msg"></p>
 </div>
 
 <script>
-let users = JSON.parse(localStorage.getItem("users")) || [];
-
 function getCode(){
-  const name = document.getElementById("name").value;
+  const name = document.getElementById("name").value.trim();
   if(!name){ alert("Ad yaz"); return; }
 
   const code = Math.floor(1000 + Math.random()*9000);
-  users.push({name,code});
-  localStorage.setItem("users",JSON.stringify(users));
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  users.push({name, code: code.toString()});
+  localStorage.setItem("users", JSON.stringify(users));
 
   document.getElementById("msg").innerText = "Kod: " + code;
 }
 
 function login(){
-  const n = document.getElementById("loginName").value;
-  const c = document.getElementById("code").value;
+  const n = document.getElementById("loginName").value.trim();
+  const c = document.getElementById("code").value.trim();
 
-  const u = users.find(x=>x.name===n && x.code==c);
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  const u = users.find(x=>x.name===n && x.code===c);
 
   if(u){
-    localStorage.setItem("user",n);
-    window.location="index.html";
-  } else {
+    localStorage.setItem("user", n);
+    location="index.html";
+  }else{
     alert("Sehv");
   }
 }
