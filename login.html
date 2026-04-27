@@ -2,93 +2,120 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>Icare.az</title>
 
 <style>
-body{
-  font-family:Arial;
-  background:#f5f7fa;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-
-.box{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  width:300px;
-}
-
-input{
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-}
-
-button{
-  width:100%;
-  padding:10px;
-  background:#2c6bed;
-  color:white;
-  border:none;
-}
+body{font-family:Arial;margin:0;background:#f4f6f9;}
+.header{background:#2c6bed;color:white;padding:15px;display:flex;justify-content:space-between;}
+.container{padding:20px;}
+.form{background:white;padding:15px;margin-bottom:10px;border-radius:10px;}
+input{padding:8px;margin:5px;}
+button{padding:8px;background:#2c6bed;color:white;border:none;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
+.card{background:white;padding:10px;border-radius:10px;}
+.card img{width:100%;height:140px;object-fit:cover;}
 </style>
+
 </head>
 
 <body>
 
-<div class="box">
+<div class="header">
+<h3>Icare.az</h3>
+<div>
+<span id="user"></span>
+<button onclick="logout()">Çıxış</button>
+</div>
+</div>
 
-<h2>Login</h2>
+<div class="container">
 
-<input id="name" placeholder="Ad">
-<button onclick="generateCode()">Kod al</button>
+<div class="form">
+<input id="brand" placeholder="Marka">
+<input id="model" placeholder="Model">
+<input id="price" placeholder="Qiymət">
+<input id="location" placeholder="Ünvan">
+<input id="phone" placeholder="Nömrə">
+<input type="file" id="image">
 
-<input id="loginName" placeholder="Ad">
-<input id="loginCode" placeholder="Kod">
-<button onclick="login()">Daxil ol</button>
+<button onclick="addCar()">Əlavə et</button>
+</div>
 
-<p id="msg"></p>
+<div id="list" class="cards"></div>
 
 </div>
 
 <script>
 
-let users = JSON.parse(localStorage.getItem("users")) || [];
+if(!localStorage.getItem("user")){
+  window.location="login.html";
+}
 
-function generateCode(){
-  const name = document.getElementById("name").value;
+document.getElementById("user").innerText = localStorage.getItem("user");
 
-  if(!name){
-    alert("Ad yaz!");
+let cars = JSON.parse(localStorage.getItem("cars")) || [];
+
+function addCar(){
+
+  const brand = document.getElementById("brand").value;
+  const model = document.getElementById("model").value;
+  const price = document.getElementById("price").value;
+  const location = document.getElementById("location").value;
+  const phone = document.getElementById("phone").value;
+  const file = document.getElementById("image").files[0];
+
+  if(!brand || !model || !price || !file){
+    alert("Hamısını doldur!");
     return;
   }
 
-  const code = Math.floor(1000 + Math.random()*9000);
+  const reader = new FileReader();
 
-  users.push({ name, code });
+  reader.onload = function(e){
 
-  localStorage.setItem("users", JSON.stringify(users));
+    const car = {
+      brand,
+      model,
+      price,
+      location,
+      phone,
+      date: new Date().toLocaleString(),
+      image: e.target.result
+    };
 
-  document.getElementById("msg").innerText =
-    "Kodun: " + code;
-}
+    cars.push(car);
 
-function login(){
-  const name = document.getElementById("loginName").value;
-  const code = document.getElementById("loginCode").value;
+    localStorage.setItem("cars", JSON.stringify(cars));
 
-  const user = users.find(u => u.name === name && u.code == code);
-
-  if(user){
-    localStorage.setItem("currentUser", name);
-    window.location.href = "index.html";
-  } else {
-    alert("Sehv!");
+    render();
   }
+
+  reader.readAsDataURL(file);
 }
+
+function render(){
+  const div = document.getElementById("list");
+  div.innerHTML="";
+
+  cars.forEach(c=>{
+    div.innerHTML += `
+    <div class="card">
+      <img src="${c.image}">
+      <b>${c.brand} ${c.model}</b>
+      <p>${c.price} AZN</p>
+      <p>${c.location}</p>
+      <p>${c.phone}</p>
+      <small>${c.date}</small>
+    </div>`;
+  });
+}
+
+function logout(){
+  localStorage.removeItem("user");
+  window.location="login.html";
+}
+
+render();
 
 </script>
 
