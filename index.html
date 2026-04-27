@@ -2,96 +2,83 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Icare.az Login</title>
-
-<style>
-body{
-  margin:0;
-  font-family:Segoe UI;
-  background:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-
-.box{
-  width:320px;
-  padding:25px;
-  border-radius:12px;
-  box-shadow:0 5px 25px rgba(0,0,0,0.1);
-}
-
-h2{
-  text-align:center;
-  margin-bottom:15px;
-}
-
-input{
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-  border:1px solid #ccc;
-  border-radius:8px;
-}
-
-button{
-  width:100%;
-  padding:10px;
-  margin-top:6px;
-  background:#2c6bed;
-  color:white;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-}
-</style>
+<title>Icare.az</title>
 </head>
 
-<body>
+<body style="font-family:Arial;">
 
-<div class="box">
-<h2>🚗 Icare.az</h2>
+<h2>Icare.az</h2>
 
-<input id="name" placeholder="Ad">
-<button onclick="getCode()">Kod al</button>
+<button onclick="logout()">Çıxış</button>
 
-<input id="loginName" placeholder="Ad">
-<input id="code" placeholder="Kod">
-<button onclick="login()">Daxil ol</button>
+<h3>Elan əlavə et</h3>
 
-<p id="msg"></p>
-</div>
+<input id="brand" placeholder="Marka"><br>
+<input id="model" placeholder="Model"><br>
+<input id="price" placeholder="Qiymət"><br>
+
+<button onclick="addCar()">Əlavə et</button>
+
+<hr>
+
+<div id="list"></div>
 
 <script>
-function getCode(){
-  const name = document.getElementById("name").value.trim();
-  if(!name){ alert("Ad yaz"); return; }
 
-  const code = Math.floor(1000 + Math.random()*9000);
-
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  users.push({name, code: code.toString()});
-  localStorage.setItem("users", JSON.stringify(users));
-
-  document.getElementById("msg").innerText = "Kod: " + code;
+// 🔐 LOGIN CHECK
+if(!localStorage.getItem("user")){
+  window.location = "login.html";
 }
 
-function login(){
-  const n = document.getElementById("loginName").value.trim();
-  const c = document.getElementById("code").value.trim();
+// DATA
+let cars = JSON.parse(localStorage.getItem("cars")) || [];
 
-  let users = JSON.parse(localStorage.getItem("users")) || [];
+// ADD
+function addCar(){
 
-  const u = users.find(x=>x.name===n && x.code===c);
+  const brand = document.getElementById("brand").value;
+  const model = document.getElementById("model").value;
+  const price = document.getElementById("price").value;
 
-  if(u){
-    localStorage.setItem("user", n);
-    location="index.html";
-  }else{
-    alert("Sehv");
+  if(!brand || !model || !price){
+    alert("Doldur!");
+    return;
   }
+
+  cars.push({
+    brand,
+    model,
+    price
+  });
+
+  localStorage.setItem("cars", JSON.stringify(cars));
+
+  render();
 }
+
+// SHOW
+function render(){
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  cars.forEach(c=>{
+    list.innerHTML += `
+      <div>
+        <b>${c.brand} ${c.model}</b> - ${c.price} AZN
+      </div>
+    `;
+  });
+}
+
+// LOGOUT
+function logout(){
+  localStorage.removeItem("user");
+  window.location = "login.html";
+}
+
+render();
+
 </script>
 
 </body>
