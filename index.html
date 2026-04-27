@@ -2,257 +2,96 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Icare.az</title>
+<title>Icare.az Login</title>
 
 <style>
-body{font-family:Arial;margin:0;background:#f4f6f9;}
-
-.header{
-background:#2c6bed;
-color:white;
-padding:15px;
-display:flex;
-justify-content:space-between;
+body{
+  margin:0;
+  font-family:Segoe UI;
+  background:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
 
-.container{padding:20px;}
-
-.form{
-background:white;
-padding:15px;
-border-radius:10px;
-margin-bottom:10px;
+.box{
+  width:320px;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 5px 25px rgba(0,0,0,0.1);
 }
 
-input{padding:8px;margin:5px;}
+h2{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border:1px solid #ccc;
+  border-radius:8px;
+}
 
 button{
-padding:6px 10px;
-background:#2c6bed;
-color:white;
-border:none;
-cursor:pointer;
-margin:2px;
-}
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-gap:10px;
-}
-
-.card{
-background:white;
-padding:10px;
-border-radius:10px;
-cursor:pointer;
-}
-
-.card img{
-width:100%;
-height:140px;
-object-fit:cover;
-border-radius:8px;
-}
-
-.details{
-display:flex;
-flex-wrap:wrap;
-gap:5px;
-margin-top:5px;
-}
-
-.details span{
-background:#eee;
-padding:3px 6px;
-border-radius:5px;
-font-size:12px;
-}
-
-/* MODAL */
-.modal{
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:rgba(0,0,0,0.5);
-display:none;
-justify-content:center;
-align-items:center;
-}
-
-.modal-box{
-background:white;
-padding:20px;
-border-radius:10px;
-width:300px;
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  background:#2c6bed;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
 }
 </style>
-
 </head>
 
 <body>
 
-<div class="header">
-<h3>Icare.az</h3>
+<div class="box">
+<h2>🚗 Icare.az</h2>
 
-<div>
-<button onclick="showAll()">Bütün</button>
-<button onclick="showFav()">Sevimlilər</button>
-<button onclick="logout()">Çıxış</button>
-</div>
-</div>
+<input id="name" placeholder="Ad">
+<button onclick="getCode()">Kod al</button>
 
-<div class="container">
+<input id="loginName" placeholder="Ad">
+<input id="code" placeholder="Kod">
+<button onclick="login()">Daxil ol</button>
 
-<div class="form">
-<input id="brand" placeholder="Marka">
-<input id="model" placeholder="Model">
-<input id="price" placeholder="Qiymət">
-<input id="location" placeholder="Ünvan">
-<input id="phone" placeholder="Nömrə">
-<input type="file" id="image">
-
-<button onclick="addCar()">Əlavə et</button>
-</div>
-
-<div id="list" class="cards"></div>
-
-</div>
-
-<!-- MODAL -->
-<div id="modal" class="modal" onclick="closeModal()">
-<div class="modal-box" id="modalContent"></div>
+<p id="msg"></p>
 </div>
 
 <script>
+function getCode(){
+  const name = document.getElementById("name").value.trim();
+  if(!name){ alert("Ad yaz"); return; }
 
-if(!localStorage.getItem("user")){
-location="login.html";
+  const code = Math.floor(1000 + Math.random()*9000);
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  users.push({name, code: code.toString()});
+  localStorage.setItem("users", JSON.stringify(users));
+
+  document.getElementById("msg").innerText = "Kod: " + code;
 }
 
-let cars = JSON.parse(localStorage.getItem("cars")) || [];
-let favs = JSON.parse(localStorage.getItem("favs")) || [];
+function login(){
+  const n = document.getElementById("loginName").value.trim();
+  const c = document.getElementById("code").value.trim();
 
-let currentView = "all";
+  let users = JSON.parse(localStorage.getItem("users")) || [];
 
-function addCar(){
+  const u = users.find(x=>x.name===n && x.code===c);
 
-const brand = document.getElementById("brand").value;
-const model = document.getElementById("model").value;
-const price = document.getElementById("price").value;
-const location = document.getElementById("location").value;
-const phone = document.getElementById("phone").value;
-const file = document.getElementById("image").files[0];
-
-if(!brand||!model||!price||!file){
-alert("Doldur");
-return;
+  if(u){
+    localStorage.setItem("user", n);
+    location="index.html";
+  }else{
+    alert("Sehv");
+  }
 }
-
-const reader = new FileReader();
-
-reader.onload = function(e){
-
-cars.push({
-id:Date.now(),
-brand,model,price,location,phone,
-owner:localStorage.getItem("user"),
-date:new Date().toLocaleString(),
-image:e.target.result
-});
-
-localStorage.setItem("cars",JSON.stringify(cars));
-render();
-}
-
-reader.readAsDataURL(file);
-}
-
-function render(){
-
-let data = currentView==="fav"
-? cars.filter(c=>favs.includes(c.id))
-: cars;
-
-list.innerHTML="";
-
-data.forEach(c=>{
-
-list.innerHTML+=`
-<div class="card">
-
-<img src="${c.image}" onclick="openModal(${c.id})">
-
-<b>${c.brand} ${c.model}</b>
-
-<div class="details">
-<span>${c.price} AZN</span>
-<span>${c.location}</span>
-<span>${c.phone}</span>
-</div>
-
-<button onclick="fav(${c.id})">❤️</button>
-
-${c.owner===localStorage.getItem("user") 
-? `<button onclick="removeCar(${c.id})">🗑</button>` 
-: ""}
-
-</div>
-`;
-});
-}
-
-function fav(id){
-if(favs.includes(id)){
-favs = favs.filter(x=>x!=id);
-}else{
-favs.push(id);
-}
-localStorage.setItem("favs",JSON.stringify(favs));
-render();
-}
-
-function showFav(){
-currentView="fav";
-render();
-}
-
-function showAll(){
-currentView="all";
-render();
-}
-
-function removeCar(id){
-cars = cars.filter(c=>c.id!==id);
-localStorage.setItem("cars",JSON.stringify(cars));
-render();
-}
-
-function openModal(id){
-const c = cars.find(x=>x.id===id);
-
-modal.style.display="flex";
-
-modalContent.innerHTML=`
-<h3>${c.brand} ${c.model}</h3>
-<p>Qiymət: ${c.price}</p>
-<p>Ünvan: ${c.location}</p>
-<p>Nömrə: ${c.phone}</p>
-<p>Tarix: ${c.date}</p>
-`;
-}
-
-function closeModal(){
-modal.style.display="none";
-}
-
-function logout(){
-localStorage.removeItem("user");
-location="login.html";
-}
-
-render();
-
 </script>
 
 </body>
