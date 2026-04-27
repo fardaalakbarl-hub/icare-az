@@ -1,27 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="az">
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>Icare.az Login</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI;
+  background:#ffffff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.card{
+  width:320px;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+.logo{
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.logo span{
+  color:#2c6bed;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  background:#2c6bed;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:14px;
+  transition:0.2s;
+}
+
+button:hover{
+  background:#1f4fd6;
+}
+
+.code{
+  text-align:center;
+  margin-top:10px;
+  font-weight:bold;
+  color:#2c6bed;
+}
+</style>
 </head>
 
-<body style="font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;background:white;">
+<body>
 
-<div style="width:300px;padding:20px;border:1px solid #ccc;border-radius:10px;">
-<h2>Icare.az</h2>
+<div class="card">
 
-<input id="name" placeholder="Ad" style="width:100%;padding:8px;margin:5px 0;">
-<button onclick="getCode()" style="width:100%;">Kod al</button>
+<div class="logo">🚗 <span>Icare.az</span></div>
 
-<input id="loginName" placeholder="Ad" style="width:100%;padding:8px;margin:5px 0;">
-<input id="code" placeholder="Kod" style="width:100%;padding:8px;margin:5px 0;">
-<button onclick="login()" style="width:100%;">Daxil ol</button>
+<input id="name" placeholder="Ad">
+<button onclick="getCode()">Kod al</button>
 
-<p id="msg"></p>
+<input id="loginName" placeholder="Ad">
+<input id="code" placeholder="Kod">
+<button onclick="login()">Daxil ol</button>
+
+<div id="msg" class="code"></div>
+
 </div>
 
 <script>
 
+// KOD AL
 function getCode(){
   const name = document.getElementById("name").value.trim();
 
@@ -34,13 +100,14 @@ function getCode(){
 
   let users = JSON.parse(localStorage.getItem("users")) || [];
 
-  users.push({name: name, code: code});
+  users.push({ name, code });
 
   localStorage.setItem("users", JSON.stringify(users));
 
   document.getElementById("msg").innerText = "Kod: " + code;
 }
 
+// LOGIN
 function login(){
 
   const name = document.getElementById("loginName").value.trim();
