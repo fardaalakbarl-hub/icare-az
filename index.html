@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <meta charset="UTF-8">
 <title>Icare.az</title>
 
@@ -252,7 +253,10 @@ location="login.html";
 }
 
 render();
+const SUPABASE_URL = "https://irwhnuywppwsfcluaelt.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3-DgPo74tGElnm0G6qko5Q_8vBpS46M";
 
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 </script>
 
 </body>
