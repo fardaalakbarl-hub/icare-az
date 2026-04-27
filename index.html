@@ -3,27 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <title>Icare.az</title>
+
 <style>
-body{font-family:Arial;margin:0;background:#eef1f5;}
+body{font-family:Arial;margin:0;background:#f4f6f9;}
+
 .header{
-display:flex;justify-content:space-between;
-background:#2c6bed;color:white;padding:10px;
+background:#2c6bed;
+color:white;
+padding:15px;
+display:flex;
+justify-content:space-between;
 }
-.container{padding:15px;}
-.form{background:white;padding:10px;margin-bottom:10px;}
-input,select{padding:8px;margin:5px;}
-button{padding:8px;background:#2c6bed;color:white;border:none;}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
-.card{background:white;padding:10px;border-radius:10px;}
-.card img{width:100%;height:140px;object-fit:cover;}
+
+.container{padding:20px;}
+
+.form{
+background:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+input{padding:8px;margin:5px;}
+
+button{
+padding:6px 10px;
+background:#2c6bed;
+color:white;
+border:none;
+cursor:pointer;
+margin:2px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+gap:10px;
+}
+
+.card{
+background:white;
+padding:10px;
+border-radius:10px;
+cursor:pointer;
+}
+
+.card img{
+width:100%;
+height:140px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.details{
+display:flex;
+flex-wrap:wrap;
+gap:5px;
+margin-top:5px;
+}
+
+.details span{
+background:#eee;
+padding:3px 6px;
+border-radius:5px;
+font-size:12px;
+}
+
+/* MODAL */
+.modal{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.5);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.modal-box{
+background:white;
+padding:20px;
+border-radius:10px;
+width:300px;
+}
 </style>
+
 </head>
 
 <body>
 
 <div class="header">
-<h2>Icare.az</h2>
-<button onclick="addCar()">Elave et</button>
+<h3>Icare.az</h3>
+
+<div>
+<button onclick="showAll()">Bütün</button>
+<button onclick="showFav()">Sevimlilər</button>
+<button onclick="logout()">Çıxış</button>
+</div>
 </div>
 
 <div class="container">
@@ -31,52 +107,152 @@ button{padding:8px;background:#2c6bed;color:white;border:none;}
 <div class="form">
 <input id="brand" placeholder="Marka">
 <input id="model" placeholder="Model">
-<input id="price" placeholder="Qiymet">
-<select id="fuel">
-<option>Benzin</option>
-<option>Hybrid</option>
-<option>Elektro</option>
-</select>
-<input id="location" placeholder="Seher">
-<input id="phone" placeholder="Nomre">
+<input id="price" placeholder="Qiymət">
+<input id="location" placeholder="Ünvan">
+<input id="phone" placeholder="Nömrə">
 <input type="file" id="image">
+
+<button onclick="addCar()">Əlavə et</button>
 </div>
 
 <div id="list" class="cards"></div>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- MODAL -->
+<div id="modal" class="modal" onclick="closeModal()">
+<div class="modal-box" id="modalContent"></div>
+</div>
 
 <script>
-const SUPABASE_URL = "https://irwhnuywppwsfcluaelt.supabase.co";
-const SUPABASE_KEY = "sb_..."; // səndə olan key
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-async function addCar(){
-  const brand = document.getElementById("brand").value;
-  const model = document.getElementById("model").value;
-  const price = document.getElementById("price").value;
-
-  if(!brand || !model || !price){
-    alert("Boş qoyma");
-    return;
-  }
-
-  const { error } = await supabase
-    .from("cars")
-    .insert([{ brand, model, price }]);
-
-  if(error){
-    console.log(error);
-    alert("Xəta oldu");
-  } else {
-    alert("Əlavə olundu");
-  }
+if(!localStorage.getItem("user")){
+location="login.html";
 }
 
-window.addCar = addCar;
-</script>
+let cars = JSON.parse(localStorage.getItem("cars")) || [];
+let favs = JSON.parse(localStorage.getItem("favs")) || [];
+
+let currentView = "all";
+
+function addCar(){
+
+const brand = document.getElementById("brand").value;
+const model = document.getElementById("model").value;
+const price = document.getElementById("price").value;
+const location = document.getElementById("location").value;
+const phone = document.getElementById("phone").value;
+const file = document.getElementById("image").files[0];
+
+if(!brand||!model||!price||!file){
+alert("Doldur");
+return;
+}
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+cars.push({
+id:Date.now(),
+brand,model,price,location,phone,
+owner:localStorage.getItem("user"),
+date:new Date().toLocaleString(),
+image:e.target.result
+});
+
+localStorage.setItem("cars",JSON.stringify(cars));
+render();
+}
+
+reader.readAsDataURL(file);
+}
+
+function render(){
+
+let data = currentView==="fav"
+? cars.filter(c=>favs.includes(c.id))
+: cars;
+
+list.innerHTML="";
+
+data.forEach(c=>{
+
+list.innerHTML+=`
+<div class="card">
+
+<img src="${c.image}" onclick="openModal(${c.id})">
+
+<b>${c.brand} ${c.model}</b>
+
+<div class="details">
+<span>${c.price} AZN</span>
+<span>${c.location}</span>
+<span>${c.phone}</span>
+</div>
+
+<button onclick="fav(${c.id})">❤️</button>
+
+${c.owner===localStorage.getItem("user") 
+? `<button onclick="removeCar(${c.id})">🗑</button>` 
+: ""}
+
+</div>
+`;
+});
+}
+
+function fav(id){
+if(favs.includes(id)){
+favs = favs.filter(x=>x!=id);
+}else{
+favs.push(id);
+}
+localStorage.setItem("favs",JSON.stringify(favs));
+render();
+}
+
+function showFav(){
+currentView="fav";
+render();
+}
+
+function showAll(){
+currentView="all";
+render();
+}
+
+function removeCar(id){
+cars = cars.filter(c=>c.id!==id);
+localStorage.setItem("cars",JSON.stringify(cars));
+render();
+}
+
+function openModal(id){
+const c = cars.find(x=>x.id===id);
+
+modal.style.display="flex";
+
+modalContent.innerHTML=`
+<h3>${c.brand} ${c.model}</h3>
+<p>Qiymət: ${c.price}</p>
+<p>Ünvan: ${c.location}</p>
+<p>Nömrə: ${c.phone}</p>
+<p>Tarix: ${c.date}</p>
+`;
+}
+
+function closeModal(){
+modal.style.display="none";
+}
+
+function logout(){
+localStorage.removeItem("user");
+location="login.html";
+}
+
+render();
+
 </script>
 
 </body>
