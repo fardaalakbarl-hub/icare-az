@@ -1,5 +1,5 @@
-const SUPABASE_URL = "BURAYA_SUPABASE_URL";
-const SUPABASE_KEY = "BURAYA_SUPABASE_KEY";
+const SUPABASE_URL = "https://irwhnuywppwsfcluaelt.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_3-DgPo74tGElnm0G6qko5Q_8vBpS46M";
 
 const supabase = window.supabase.createClient(
 SUPABASE_URL,
