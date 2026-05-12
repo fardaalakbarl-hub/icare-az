@@ -19,7 +19,7 @@ font-family:Arial;
 body{
 background:#0b1120;
 color:white;
-padding-bottom:100px;
+padding-bottom:95px;
 }
 
 /* HEADER */
@@ -27,9 +27,9 @@ padding-bottom:100px;
 .header{
 position:sticky;
 top:0;
-z-index:100;
+z-index:1000;
 background:#1565ff;
-padding:18px;
+padding:16px;
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -55,16 +55,16 @@ font-weight:bold;
 
 /* SEARCH */
 
-.search-box{
+.search{
 padding:15px;
 background:#111827;
 }
 
-.search-box input{
+.search input{
 width:100%;
 padding:14px;
 border:none;
-border-radius:14px;
+border-radius:15px;
 background:#1e293b;
 color:white;
 font-size:15px;
@@ -97,20 +97,20 @@ padding:15px;
 
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-gap:16px;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:18px;
 }
 
 .card{
 background:#1e293b;
-border-radius:22px;
+border-radius:24px;
 overflow:hidden;
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
+box-shadow:0 10px 35px rgba(0,0,0,0.35);
 transition:0.3s;
 }
 
 .card:hover{
-transform:translateY(-3px);
+transform:translateY(-4px);
 }
 
 .card img{
@@ -123,15 +123,26 @@ object-fit:cover;
 padding:14px;
 }
 
-.price{
-font-size:26px;
+.vip{
+background:gold;
+color:black;
+display:inline-block;
+padding:5px 10px;
+border-radius:10px;
+font-size:12px;
 font-weight:bold;
-color:#4da3ff;
 margin-bottom:10px;
 }
 
+.price{
+font-size:28px;
+font-weight:bold;
+color:#4da3ff;
+margin-bottom:12px;
+}
+
 .title{
-font-size:20px;
+font-size:21px;
 font-weight:bold;
 margin-bottom:10px;
 }
@@ -145,27 +156,21 @@ margin-bottom:12px;
 
 .info{
 background:#0f172a;
-padding:8px;
-border-radius:10px;
+padding:9px;
+border-radius:12px;
 font-size:13px;
 color:#cbd5e1;
 }
 
-.bottom-row{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:12px;
-}
-
 .location{
-color:#94a3b8;
+margin-top:8px;
 font-size:13px;
+color:#94a3b8;
 }
 
 .actions{
 display:flex;
-gap:8px;
+gap:10px;
 margin-top:15px;
 }
 
@@ -173,9 +178,9 @@ margin-top:15px;
 flex:1;
 padding:12px;
 border:none;
-border-radius:12px;
-font-weight:bold;
+border-radius:14px;
 cursor:pointer;
+font-weight:bold;
 }
 
 .favorite{
@@ -201,18 +206,18 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.8);
+background:rgba(0,0,0,0.85);
 display:none;
 justify-content:center;
 align-items:center;
 padding:15px;
-z-index:999;
+z-index:2000;
 }
 
 .modal-content{
 background:#1e293b;
 width:100%;
-max-width:520px;
+max-width:550px;
 border-radius:25px;
 padding:20px;
 max-height:90vh;
@@ -228,9 +233,9 @@ margin-bottom:15px;
 width:100%;
 padding:14px;
 margin-bottom:12px;
-background:#0f172a;
 border:none;
 border-radius:14px;
+background:#0f172a;
 color:white;
 }
 
@@ -239,14 +244,14 @@ width:100%;
 padding:15px;
 background:#1565ff;
 border:none;
-border-radius:14px;
+border-radius:15px;
 color:white;
 font-size:16px;
 font-weight:bold;
 cursor:pointer;
 }
 
-/* BOTTOM MENU */
+/* MENU */
 
 .bottom-menu{
 position:fixed;
@@ -259,7 +264,7 @@ display:flex;
 justify-content:space-around;
 align-items:center;
 border-top:1px solid #1e293b;
-z-index:1000;
+z-index:3000;
 }
 
 .menu-item{
@@ -275,8 +280,8 @@ color:#4da3ff;
 }
 
 .plus{
-width:68px;
-height:68px;
+width:70px;
+height:70px;
 background:#1565ff;
 border-radius:50%;
 display:flex;
@@ -284,12 +289,61 @@ justify-content:center;
 align-items:center;
 font-size:42px;
 margin-top:-40px;
-box-shadow:0 10px 25px rgba(21,101,255,0.5);
+box-shadow:0 10px 30px rgba(21,101,255,0.5);
+}
+
+/* DETAIL */
+
+.detail{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#0b1120;
+z-index:5000;
+overflow:auto;
+display:none;
+}
+
+.detail img{
+width:100%;
+height:320px;
+object-fit:cover;
+}
+
+.detail-content{
+padding:20px;
+}
+
+.detail-price{
+font-size:34px;
+font-weight:bold;
+color:#4da3ff;
+margin-bottom:12px;
+}
+
+.detail-title{
+font-size:28px;
+font-weight:bold;
+margin-bottom:14px;
+}
+
+.detail-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-bottom:15px;
+}
+
+.detail-info{
+background:#1e293b;
+padding:12px;
+border-radius:14px;
 }
 
 </style>
 </head>
-
 <body>
 
 <!-- HEADER -->
@@ -308,8 +362,8 @@ A
 
 <!-- SEARCH -->
 
-<div class="search-box">
-<input type="text" placeholder="Marka, model axtar...">
+<div class="search">
+<input type="text" placeholder="Marka və model axtar...">
 </div>
 
 <!-- FILTER -->
@@ -374,7 +428,8 @@ A
 <input id="year" placeholder="İl">
 <input id="price" placeholder="Qiymət">
 <input id="engine" placeholder="Mator">
-<input id="seats" placeholder="Yer sayı">
+<input id="mileage" placeholder="Yürüş km">
+<input id="vin" placeholder="VIN">
 
 <select id="body">
 <option>Sedan</option>
@@ -383,6 +438,19 @@ A
 <option>Universal</option>
 </select>
 
+<select id="fuel">
+<option>Benzin</option>
+<option>Dizel</option>
+<option>Elektrik</option>
+<option>Hibrid</option>
+</select>
+
+<select id="gearbox">
+<option>Avtomat</option>
+<option>Mexanika</option>
+</select>
+
+<input id="seats" placeholder="Yer sayı">
 <input id="color" placeholder="Rəng">
 <input id="rentacar" placeholder="Rentacar adı">
 <input id="location" placeholder="Konum">
@@ -396,6 +464,10 @@ Elanı yerləşdir
 </div>
 
 </div>
+
+<!-- DETAIL -->
+
+<div class="detail" id="detail"></div>
 
 <!-- MENU -->
 
@@ -429,15 +501,15 @@ Elanı yerləşdir
 
 <script>
 
-const SUPABASE_URL = "BURAYA_SUPABASE_URL";
-const SUPABASE_KEY = "BURAYA_KEY";
+const SUPABASE_URL="BURAYA_URL";
+const SUPABASE_KEY="BURAYA_KEY";
 
-const supabase = window.supabase.createClient(
+const supabase=window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
 
-/* MODAL */
+/* OPEN MODAL */
 
 function openModal(){
 document.getElementById("modal").style.display="flex";
@@ -458,8 +530,12 @@ const model=document.getElementById("model").value;
 const year=document.getElementById("year").value;
 const price=document.getElementById("price").value;
 const engine=document.getElementById("engine").value;
-const seats=document.getElementById("seats").value;
+const mileage=document.getElementById("mileage").value;
+const vin=document.getElementById("vin").value;
 const body=document.getElementById("body").value;
+const fuel=document.getElementById("fuel").value;
+const gearbox=document.getElementById("gearbox").value;
+const seats=document.getElementById("seats").value;
 const color=document.getElementById("color").value;
 const rentacar=document.getElementById("rentacar").value;
 const location=document.getElementById("location").value;
@@ -473,8 +549,12 @@ model,
 year,
 price,
 engine,
-seats,
+mileage,
+vin,
 body,
+fuel,
+gearbox,
+seats,
 color,
 rentacar,
 location,
@@ -508,9 +588,14 @@ list.innerHTML += `
 
 <div class="card">
 
-<img src="${car.image}">
+<img src="${car.image}"
+onclick="openDetail('${car.id}')">
 
 <div class="card-content">
+
+<div class="vip">
+VIP
+</div>
 
 <div class="price">
 ${car.price} AZN
@@ -531,6 +616,10 @@ ${car.brand} ${car.model}
 </div>
 
 <div class="info">
+⛽ ${car.fuel}
+</div>
+
+<div class="info">
 🚘 ${car.body}
 </div>
 
@@ -543,21 +632,21 @@ ${car.brand} ${car.model}
 </div>
 
 <div class="info">
-🏢 ${car.rentacar}
+🔄 ${car.gearbox}
+</div>
+
+<div class="info">
+🛣 ${car.mileage}
 </div>
 
 </div>
-
-<div class="bottom-row">
 
 <div class="location">
 📍 ${car.location}
 </div>
 
 <div class="location">
-📞 ${car.phone}
-</div>
-
+🏢 ${car.rentacar}
 </div>
 
 <div class="actions">
@@ -586,6 +675,127 @@ onclick="window.open('https://wa.me/${car.phone}')">
 
 });
 
+}
+
+/* DETAIL */
+
+async function openDetail(id){
+
+const { data } = await supabase
+.from("cars")
+.select("*")
+.eq("id",id)
+.single();
+
+const detail=document.getElementById("detail");
+
+detail.style.display="block";
+
+detail.innerHTML=`
+
+<img src="${data.image}">
+
+<div class="detail-content">
+
+<div class="detail-price">
+${data.price} AZN
+</div>
+
+<div class="detail-title">
+${data.brand} ${data.model}
+</div>
+
+<div class="detail-grid">
+
+<div class="detail-info">
+📅 ${data.year}
+</div>
+
+<div class="detail-info">
+⚙ ${data.engine}
+</div>
+
+<div class="detail-info">
+⛽ ${data.fuel}
+</div>
+
+<div class="detail-info">
+🚘 ${data.body}
+</div>
+
+<div class="detail-info">
+💺 ${data.seats}
+</div>
+
+<div class="detail-info">
+🎨 ${data.color}
+</div>
+
+<div class="detail-info">
+🔄 ${data.gearbox}
+</div>
+
+<div class="detail-info">
+🛣 ${data.mileage}
+</div>
+
+<div class="detail-info">
+🔑 ${data.vin}
+</div>
+
+</div>
+
+<div style="margin-top:20px;">
+📍 ${data.location}
+</div>
+
+<div style="margin-top:10px;">
+🏢 ${data.rentacar}
+</div>
+
+<div style="margin-top:10px;">
+📞 ${data.phone}
+</div>
+
+<div class="actions" style="margin-top:20px;">
+
+<button class="favorite">
+❤️ Sevimli
+</button>
+
+<button class="share">
+🔗 Paylaş
+</button>
+
+<button class="message"
+onclick="window.open('https://wa.me/${data.phone}')">
+💬 Mesaj
+</button>
+
+</div>
+
+<button
+style="
+width:100%;
+padding:16px;
+margin-top:20px;
+background:#1565ff;
+border:none;
+border-radius:16px;
+color:white;
+font-size:16px;"
+onclick="closeDetail()">
+Bağla
+</button>
+
+</div>
+
+`;
+
+}
+
+function closeDetail(){
+document.getElementById("detail").style.display="none";
 }
 
 loadCars();
