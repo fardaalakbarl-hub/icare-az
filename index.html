@@ -17,106 +17,174 @@ font-family:Arial;
 }
 
 body{
-background:#0f1724;
+background:#0b1120;
 color:white;
-padding-bottom:90px;
+padding-bottom:100px;
 }
 
+/* HEADER */
+
 .header{
-background:#1565ff;
-padding:15px;
-font-size:24px;
-font-weight:bold;
 position:sticky;
 top:0;
 z-index:100;
+background:#1565ff;
+padding:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 5px 20px rgba(0,0,0,0.3);
 }
 
-.filter{
-padding:10px;
+.logo{
+font-size:24px;
+font-weight:bold;
+}
+
+.profile{
+width:42px;
+height:42px;
+border-radius:50%;
+background:white;
+color:#1565ff;
 display:flex;
-gap:10px;
-overflow:auto;
+justify-content:center;
+align-items:center;
+font-weight:bold;
+}
+
+/* SEARCH */
+
+.search-box{
+padding:15px;
 background:#111827;
 }
 
-.filter input,
-.filter select{
-background:#1e293b;
+.search-box input{
+width:100%;
+padding:14px;
 border:none;
+border-radius:14px;
+background:#1e293b;
 color:white;
-padding:10px;
-border-radius:10px;
-min-width:140px;
+font-size:15px;
 }
 
-.container{
+/* FILTER */
+
+.filters{
+display:flex;
+overflow:auto;
+gap:10px;
 padding:12px;
+background:#111827;
+}
+
+.filters select{
+min-width:140px;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#1e293b;
+color:white;
+}
+
+/* CARDS */
+
+.container{
+padding:15px;
 }
 
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:15px;
+grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+gap:16px;
 }
 
 .card{
 background:#1e293b;
-border-radius:18px;
+border-radius:22px;
 overflow:hidden;
-position:relative;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-3px);
 }
 
 .card img{
 width:100%;
-height:200px;
+height:220px;
 object-fit:cover;
 }
 
 .card-content{
-padding:12px;
+padding:14px;
 }
 
 .price{
-font-size:24px;
+font-size:26px;
 font-weight:bold;
 color:#4da3ff;
 margin-bottom:10px;
 }
 
 .title{
-font-size:18px;
-margin-bottom:8px;
+font-size:20px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.info-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+margin-bottom:12px;
 }
 
 .info{
+background:#0f172a;
+padding:8px;
+border-radius:10px;
+font-size:13px;
 color:#cbd5e1;
-margin-bottom:5px;
-font-size:14px;
 }
 
-.buttons{
+.bottom-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:12px;
+}
+
+.location{
+color:#94a3b8;
+font-size:13px;
+}
+
+.actions{
 display:flex;
 gap:8px;
-margin-top:10px;
+margin-top:15px;
 }
 
-.buttons button{
+.actions button{
 flex:1;
-padding:10px;
+padding:12px;
 border:none;
-border-radius:10px;
-cursor:pointer;
+border-radius:12px;
 font-weight:bold;
-}
-
-.whatsapp{
-background:#22c55e;
-color:white;
+cursor:pointer;
 }
 
 .favorite{
 background:#ef4444;
+color:white;
+}
+
+.message{
+background:#22c55e;
 color:white;
 }
 
@@ -125,7 +193,9 @@ background:#1565ff;
 color:white;
 }
 
-.add-modal{
+/* MODAL */
+
+.modal{
 position:fixed;
 top:0;
 left:0;
@@ -136,66 +206,68 @@ display:none;
 justify-content:center;
 align-items:center;
 padding:15px;
-z-index:200;
+z-index:999;
 }
 
-.form{
+.modal-content{
 background:#1e293b;
-padding:20px;
-border-radius:20px;
 width:100%;
-max-width:500px;
+max-width:520px;
+border-radius:25px;
+padding:20px;
 max-height:90vh;
 overflow:auto;
 }
 
-.form h2{
+.modal-content h2{
 margin-bottom:15px;
 }
 
-.form input,
-.form select{
+.modal-content input,
+.modal-content select{
 width:100%;
-padding:12px;
-margin-bottom:10px;
-background:#0f1724;
+padding:14px;
+margin-bottom:12px;
+background:#0f172a;
 border:none;
-border-radius:10px;
+border-radius:14px;
 color:white;
 }
 
-.form button{
+.modal-content button{
 width:100%;
-padding:14px;
+padding:15px;
 background:#1565ff;
 border:none;
-border-radius:12px;
+border-radius:14px;
 color:white;
 font-size:16px;
 font-weight:bold;
 cursor:pointer;
 }
 
+/* BOTTOM MENU */
+
 .bottom-menu{
 position:fixed;
 bottom:0;
 left:0;
 width:100%;
-height:75px;
+height:82px;
 background:#111827;
 display:flex;
 justify-content:space-around;
 align-items:center;
 border-top:1px solid #1e293b;
-z-index:300;
+z-index:1000;
 }
 
 .menu-item{
 display:flex;
 flex-direction:column;
 align-items:center;
-font-size:12px;
-color:#9ca3af;
+font-size:11px;
+color:#94a3b8;
 }
 
 .menu-item.active{
@@ -203,33 +275,59 @@ color:#4da3ff;
 }
 
 .plus{
-width:60px;
-height:60px;
+width:68px;
+height:68px;
 background:#1565ff;
 border-radius:50%;
 display:flex;
-align-items:center;
 justify-content:center;
-font-size:38px;
-margin-top:-35px;
-color:white;
+align-items:center;
+font-size:42px;
+margin-top:-40px;
+box-shadow:0 10px 25px rgba(21,101,255,0.5);
 }
 
 </style>
 </head>
+
 <body>
 
+<!-- HEADER -->
+
 <div class="header">
+
+<div class="logo">
 icare.az
 </div>
 
-<div class="filter">
-<input type="text" placeholder="Marka">
+<div class="profile">
+A
+</div>
+
+</div>
+
+<!-- SEARCH -->
+
+<div class="search-box">
+<input type="text" placeholder="Marka, model axtar...">
+</div>
+
+<!-- FILTER -->
+
+<div class="filters">
+
+<select>
+<option>Marka</option>
+<option>BMW</option>
+<option>Mercedes</option>
+<option>Kia</option>
+</select>
+
 <select>
 <option>Ban növü</option>
 <option>Sedan</option>
 <option>SUV</option>
-<option>Hatchback</option>
+<option>Coupe</option>
 </select>
 
 <select>
@@ -239,8 +337,23 @@ icare.az
 <option>10000+</option>
 </select>
 
-<input type="text" placeholder="Şəhər">
+<select>
+<option>Rəng</option>
+<option>Qara</option>
+<option>Ağ</option>
+<option>Göy</option>
+</select>
+
+<select>
+<option>Şəhər</option>
+<option>Bakı</option>
+<option>Gəncə</option>
+<option>Sumqayıt</option>
+</select>
+
 </div>
+
+<!-- CARDS -->
 
 <div class="container">
 
@@ -248,11 +361,13 @@ icare.az
 
 </div>
 
-<div class="add-modal" id="modal">
+<!-- ADD MODAL -->
 
-<div class="form">
+<div class="modal" id="modal">
 
-<h2>Yeni Elan</h2>
+<div class="modal-content">
+
+<h2>Yeni elan</h2>
 
 <input id="brand" placeholder="Marka">
 <input id="model" placeholder="Model">
@@ -264,7 +379,8 @@ icare.az
 <select id="body">
 <option>Sedan</option>
 <option>SUV</option>
-<option>Hatchback</option>
+<option>Coupe</option>
+<option>Universal</option>
 </select>
 
 <input id="color" placeholder="Rəng">
@@ -273,22 +389,26 @@ icare.az
 <input id="phone" placeholder="Mobil nömrə">
 <input id="image" placeholder="Şəkil linki">
 
-<button onclick="addCar()">Elanı yerləşdir</button>
+<button onclick="addCar()">
+Elanı yerləşdir
+</button>
 
 </div>
 
 </div>
+
+<!-- MENU -->
 
 <div class="bottom-menu">
 
 <div class="menu-item active">
 🏠
-<div>ƏSAS</div>
+<div>Əsas</div>
 </div>
 
 <div class="menu-item">
 ❤️
-<div>SEÇİLMİŞLƏR</div>
+<div>Seçilmiş</div>
 </div>
 
 <div class="plus" onclick="openModal()">
@@ -297,25 +417,27 @@ icare.az
 
 <div class="menu-item">
 💬
-<div>MESAJLAR</div>
+<div>Mesajlar</div>
 </div>
 
 <div class="menu-item">
 👤
-<div>KABİNET</div>
+<div>Kabinet</div>
 </div>
 
 </div>
 
 <script>
 
-const SUPABASE_URL = "BURAYA_URL";
+const SUPABASE_URL = "BURAYA_SUPABASE_URL";
 const SUPABASE_KEY = "BURAYA_KEY";
 
 const supabase = window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
+
+/* MODAL */
 
 function openModal(){
 document.getElementById("modal").style.display="flex";
@@ -326,6 +448,8 @@ if(e.target.id=="modal"){
 document.getElementById("modal").style.display="none";
 }
 }
+
+/* ADD */
 
 async function addCar(){
 
@@ -365,6 +489,8 @@ document.getElementById("modal").style.display="none";
 
 }
 
+/* LOAD */
+
 async function loadCars(){
 
 const { data } = await supabase
@@ -378,7 +504,7 @@ list.innerHTML="";
 
 data.forEach(car=>{
 
-list.innerHTML+=`
+list.innerHTML += `
 
 <div class="card">
 
@@ -393,6 +519,8 @@ ${car.price} AZN
 <div class="title">
 ${car.brand} ${car.model}
 </div>
+
+<div class="info-grid">
 
 <div class="info">
 📅 ${car.year}
@@ -415,14 +543,24 @@ ${car.brand} ${car.model}
 </div>
 
 <div class="info">
-📍 ${car.location}
-</div>
-
-<div class="info">
 🏢 ${car.rentacar}
 </div>
 
-<div class="buttons">
+</div>
+
+<div class="bottom-row">
+
+<div class="location">
+📍 ${car.location}
+</div>
+
+<div class="location">
+📞 ${car.phone}
+</div>
+
+</div>
+
+<div class="actions">
 
 <button class="favorite">
 ❤️
@@ -433,7 +571,7 @@ onclick="navigator.share({title:'icare.az',url:window.location.href})">
 🔗
 </button>
 
-<button class="whatsapp"
+<button class="message"
 onclick="window.open('https://wa.me/${car.phone}')">
 💬
 </button>
