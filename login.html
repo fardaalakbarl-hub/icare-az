@@ -4,77 +4,190 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>icare.az Login</title>
+<title>icare.az</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
-body{
+*{
 margin:0;
-font-family:Arial;
-background:#0b1220;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
+background:#0b1220;
+overflow:hidden;
+}
+
+.bg{
+position:absolute;
+width:100%;
+height:100%;
+background:
+linear-gradient(rgba(21,101,255,0.25),rgba(21,101,255,0.25)),
+url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070");
+background-size:cover;
+background-position:center;
+filter:blur(3px);
+transform:scale(1.1);
 }
 
 .box{
-width:350px;
-background:#1e293b;
-padding:30px;
-border-radius:20px;
+position:relative;
+z-index:10;
+width:95%;
+max-width:420px;
+background:rgba(15,23,42,0.95);
+padding:35px;
+border-radius:30px;
+box-shadow:0 20px 60px rgba(0,0,0,0.5);
 }
 
-h1{
-color:#4da3ff;
+.logo{
+font-size:40px;
+font-weight:bold;
 text-align:center;
+color:#4da3ff;
+margin-bottom:10px;
+}
+
+.sub{
+text-align:center;
+color:#94a3b8;
+margin-bottom:30px;
+}
+
+.tabs{
+display:flex;
+background:#1e293b;
+border-radius:18px;
+padding:5px;
+margin-bottom:25px;
+}
+
+.tab{
+flex:1;
+padding:13px;
+border-radius:14px;
+text-align:center;
+cursor:pointer;
+font-weight:bold;
+color:#94a3b8;
+}
+
+.active{
+background:#1565ff;
+color:white;
+}
+
+.form{
+display:none;
+}
+
+.form.active-form{
+display:block;
 }
 
 input{
 width:100%;
-padding:15px;
-margin-top:10px;
+padding:16px;
+margin-bottom:14px;
 border:none;
-border-radius:12px;
-background:#0f172a;
+border-radius:16px;
+background:#1e293b;
 color:white;
+font-size:15px;
+outline:none;
 }
 
 button{
 width:100%;
-padding:15px;
-margin-top:15px;
+padding:16px;
 border:none;
-border-radius:12px;
+border-radius:18px;
 background:#1565ff;
 color:white;
+font-size:16px;
 font-weight:bold;
 cursor:pointer;
+margin-top:5px;
 }
 
 </style>
-
 </head>
 
 <body>
 
+<div class="bg"></div>
+
 <div class="box">
 
-<h1>icare.az</h1>
+<div class="logo">
+icare.az
+</div>
 
-<input type="text" id="username" placeholder="İstifadəçi adı">
+<div class="sub">
+Avtomobil elan platforması
+</div>
 
-<input type="password" id="password" placeholder="Kod">
+<div class="tabs">
 
-<button onclick="register()">
+<div class="tab active"
+onclick="showLogin()"
+id="loginTab">
+Daxil ol
+</div>
+
+<div class="tab"
+onclick="showRegister()"
+id="registerTab">
 Qeydiyyat
-</button>
+</div>
+
+</div>
+
+<!-- LOGIN -->
+
+<div class="form active-form" id="loginForm">
+
+<input type="text"
+id="loginUsername"
+placeholder="İstifadəçi adı">
+
+<input type="password"
+id="loginPassword"
+placeholder="Kod">
 
 <button onclick="login()">
 Daxil ol
 </button>
+
+</div>
+
+<!-- REGISTER -->
+
+<div class="form" id="registerForm">
+
+<input type="text"
+id="registerUsername"
+placeholder="İstifadəçi adı">
+
+<input type="password"
+id="registerPassword"
+placeholder="Kod">
+
+<button onclick="register()">
+Qeydiyyatdan keç
+</button>
+
+</div>
 
 </div>
 
@@ -85,42 +198,87 @@ const supabase = window.supabase.createClient(
 "sb_publishable_3-DgPo74tGElnm0G6qko5Q_8vBpS46M"
 );
 
+/* TABS */
+
+function showLogin(){
+
+document.getElementById("loginForm")
+.classList.add("active-form");
+
+document.getElementById("registerForm")
+.classList.remove("active-form");
+
+document.getElementById("loginTab")
+.classList.add("active");
+
+document.getElementById("registerTab")
+.classList.remove("active");
+
+}
+
+function showRegister(){
+
+document.getElementById("registerForm")
+.classList.add("active-form");
+
+document.getElementById("loginForm")
+.classList.remove("active-form");
+
+document.getElementById("registerTab")
+.classList.add("active");
+
+document.getElementById("loginTab")
+.classList.remove("active");
+
+}
+
+/* REGISTER */
+
 async function register(){
 
 const username =
-document.getElementById("username").value;
+document.getElementById("registerUsername").value;
 
 const password =
-document.getElementById("password").value;
+document.getElementById("registerPassword").value;
+
+if(!username || !password){
+alert("Məlumatları doldur");
+return;
+}
 
 const { error } = await supabase
 .from("users")
 .insert([
 {
-username:username,
-password:password
+username,
+password
 }
 ]);
 
 if(error){
 
-alert("İstifadəçi artıq var");
+alert("İstifadəçi artıq mövcuddur");
 
 }else{
 
 alert("Qeydiyyat tamamlandı");
 
+showLogin();
+
 }
 
 }
+
+/* LOGIN */
 
 async function login(){
 
 const username =
-document.getElementById("username").value;
+document.getElementById("loginUsername").value;
 
 const password =
-document.getElementById("password").value;
+document.getElementById("loginPassword").value;
 
 const { data } = await supabase
 .from("users")
@@ -139,7 +297,7 @@ window.location.href="index.html";
 
 }else{
 
-alert("Kod və ya istifadəçi adı səhvdir");
+alert("İstifadəçi adı və ya kod səhvdir");
 
 }
 
