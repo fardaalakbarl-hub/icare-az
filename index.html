@@ -3,41 +3,244 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>icare.az</title>
 
 <style>
 
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial;
+}
+
+body{
 background:#0f172a;
 color:white;
+padding-bottom:100px;
 }
+
+/* HEADER */
 
 .header{
 background:#1565ff;
-padding:20px;
-font-size:24px;
+padding:18px;
+font-size:28px;
 font-weight:bold;
+position:sticky;
+top:0;
+z-index:999;
 }
 
-.container{
-padding:20px;
+/* SEARCH */
+
+.search{
+padding:15px;
+}
+
+.search input{
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+background:#1e293b;
+color:white;
+font-size:15px;
+}
+
+/* FILTER */
+
+.filters{
+display:flex;
+gap:10px;
+overflow:auto;
+padding:0 15px 15px;
+}
+
+.filters select{
+padding:12px;
+border:none;
+border-radius:12px;
+background:#1e293b;
+color:white;
+min-width:130px;
+}
+
+/* CARDS */
+
+.cards{
+padding:15px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
 }
 
 .card{
 background:#1e293b;
+border-radius:22px;
+overflow:hidden;
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.content{
 padding:15px;
-border-radius:15px;
+}
+
+.price{
+font-size:28px;
+font-weight:bold;
+color:#4da3ff;
+margin-bottom:10px;
+}
+
+.title{
+font-size:22px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.info{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.info div{
+background:#0f172a;
+padding:10px;
+border-radius:10px;
+font-size:13px;
+}
+
+.location{
+margin-top:12px;
+color:#cbd5e1;
+font-size:14px;
+}
+
+/* BUTTONS */
+
+.actions{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.actions button{
+flex:1;
+padding:12px;
+border:none;
+border-radius:12px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.favorite{
+background:#ef4444;
+}
+
+.message{
+background:#22c55e;
+}
+
+.share{
+background:#1565ff;
+}
+
+/* MODAL */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+display:none;
+justify-content:center;
+align-items:center;
+padding:15px;
+z-index:9999;
+}
+
+.modal-box{
+background:#1e293b;
+padding:20px;
+border-radius:20px;
+width:100%;
+max-width:500px;
+max-height:90vh;
+overflow:auto;
+}
+
+.modal-box h2{
 margin-bottom:15px;
 }
 
-button{
-padding:12px;
+.modal-box input{
+width:100%;
+padding:14px;
+margin-bottom:12px;
 border:none;
-border-radius:10px;
-background:red;
+border-radius:12px;
+background:#0f172a;
 color:white;
+}
+
+.modal-box button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+background:#1565ff;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+/* MENU */
+
+.menu{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:80px;
+background:#111827;
+display:flex;
+justify-content:space-around;
+align-items:center;
+}
+
+.menu-item{
+display:flex;
+flex-direction:column;
+align-items:center;
+font-size:12px;
+color:#94a3b8;
+}
+
+.active{
+color:#4da3ff;
+}
+
+.plus{
+width:70px;
+height:70px;
+background:#1565ff;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:40px;
+margin-top:-35px;
 cursor:pointer;
 }
 
@@ -61,38 +264,285 @@ window.location.href =
 
 </script>
 
+<!-- HEADER -->
+
 <div class="header">
 icare.az
 </div>
 
-<div class="container">
+<!-- SEARCH -->
 
-<div class="card">
-BMW M5 - 45000 AZN
+<div class="search">
+
+<input type="text"
+placeholder="Marka və model axtar...">
+
 </div>
 
-<div class="card">
-Mercedes E200 - 38000 AZN
+<!-- FILTER -->
+
+<div class="filters">
+
+<select>
+<option>Marka</option>
+<option>BMW</option>
+<option>Mercedes</option>
+</select>
+
+<select>
+<option>Ban növü</option>
+<option>Sedan</option>
+<option>SUV</option>
+</select>
+
+<select>
+<option>Qiymət</option>
+<option>0-10000</option>
+<option>10000-30000</option>
+</select>
+
 </div>
 
-<button onclick="logout()">
-Çıxış et
+<!-- CARDS -->
+
+<div class="cards" id="cards"></div>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+<div class="modal-box">
+
+<h2>Yeni elan</h2>
+
+<input id="brand"
+placeholder="Marka">
+
+<input id="model"
+placeholder="Model">
+
+<input id="year"
+placeholder="İl">
+
+<input id="price"
+placeholder="Qiymət">
+
+<input id="engine"
+placeholder="Mator">
+
+<input id="body"
+placeholder="Ban növü">
+
+<input id="seats"
+placeholder="Yer sayı">
+
+<input id="location"
+placeholder="Konum">
+
+<input id="phone"
+placeholder="Mobil nömrə">
+
+<input id="image"
+placeholder="Şəkil linki">
+
+<button onclick="addCar()">
+Elanı yerləşdir
 </button>
+
+</div>
+
+</div>
+
+<!-- MENU -->
+
+<div class="menu">
+
+<div class="menu-item active">
+🏠
+<div>Əsas</div>
+</div>
+
+<div class="menu-item">
+❤️
+<div>Sevimli</div>
+</div>
+
+<div class="plus"
+onclick="openModal()">
++
+</div>
+
+<div class="menu-item">
+💬
+<div>Mesaj</div>
+</div>
+
+<div class="menu-item">
+👤
+<div>Kabinet</div>
+</div>
 
 </div>
 
 <script>
 
-function logout(){
+function openModal(){
 
-localStorage.removeItem(
-"activeUser"
-);
-
-window.location.href =
-"login.html";
+document.getElementById("modal")
+.style.display="flex";
 
 }
+
+window.onclick=function(e){
+
+if(e.target.id=="modal"){
+
+document.getElementById("modal")
+.style.display="none";
+
+}
+
+}
+
+function addCar(){
+
+const brand =
+document.getElementById("brand").value;
+
+const model =
+document.getElementById("model").value;
+
+const year =
+document.getElementById("year").value;
+
+const price =
+document.getElementById("price").value;
+
+const engine =
+document.getElementById("engine").value;
+
+const body =
+document.getElementById("body").value;
+
+const seats =
+document.getElementById("seats").value;
+
+const location =
+document.getElementById("location").value;
+
+const phone =
+document.getElementById("phone").value;
+
+const image =
+document.getElementById("image").value;
+
+const car = {
+brand,
+model,
+year,
+price,
+engine,
+body,
+seats,
+location,
+phone,
+image
+};
+
+let cars =
+JSON.parse(localStorage.getItem("cars"))
+|| [];
+
+cars.push(car);
+
+localStorage.setItem(
+"cars",
+JSON.stringify(cars)
+);
+
+loadCars();
+
+document.getElementById("modal")
+.style.display="none";
+
+}
+
+function loadCars(){
+
+const cards =
+document.getElementById("cards");
+
+cards.innerHTML="";
+
+let cars =
+JSON.parse(localStorage.getItem("cars"))
+|| [];
+
+cars.reverse().forEach(car=>{
+
+cards.innerHTML += `
+
+<div class="card">
+
+<img src="${car.image}">
+
+<div class="content">
+
+<div class="price">
+${car.price} AZN
+</div>
+
+<div class="title">
+${car.brand} ${car.model}
+</div>
+
+<div class="info">
+
+<div>📅 ${car.year}</div>
+
+<div>⚙️ ${car.engine}</div>
+
+<div>🚘 ${car.body}</div>
+
+<div>💺 ${car.seats}</div>
+
+</div>
+
+<div class="location">
+📍 ${car.location}
+</div>
+
+<div class="location">
+📞 ${car.phone}
+</div>
+
+<div class="actions">
+
+<button class="favorite">
+❤️
+</button>
+
+<button class="share">
+🔗
+</button>
+
+<button class="message">
+💬
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadCars();
 
 </script>
 
