@@ -1,130 +1,44 @@
 <!DOCTYPE html>
 <html lang="az">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>icare.az</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
 body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#0b1220;
-overflow:hidden;
-}
-
-.bg{
-position:absolute;
-width:100%;
-height:100%;
-background:
-linear-gradient(rgba(21,101,255,0.15),rgba(21,101,255,0.15)),
-url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070");
-background-size:cover;
-background-position:center;
-filter:blur(3px);
-transform:scale(1.1);
-}
-
-.login-box{
-position:relative;
-z-index:10;
-width:95%;
-max-width:420px;
-background:rgba(15,23,42,0.92);
-backdrop-filter:blur(15px);
-padding:35px;
-border-radius:28px;
-box-shadow:0 20px 60px rgba(0,0,0,0.5);
-border:1px solid rgba(255,255,255,0.08);
-}
-
-.logo{
-font-size:40px;
-font-weight:bold;
-color:#4da3ff;
-text-align:center;
-margin-bottom:8px;
-}
-
-.subtitle{
-text-align:center;
-color:#94a3b8;
-margin-bottom:30px;
-font-size:14px;
-}
-
-.input-group{
-margin-bottom:18px;
-}
-
-.input-group label{
-display:block;
-margin-bottom:8px;
-font-size:14px;
-color:#cbd5e1;
-}
-
-.input-group input{
-width:100%;
-padding:16px;
-border:none;
-border-radius:16px;
-background:#1e293b;
+margin:0;
+font-family:Arial;
+background:#0f172a;
 color:white;
-font-size:15px;
-outline:none;
 }
 
-.input-group input:focus{
-box-shadow:0 0 0 2px #1565ff;
-}
-
-.login-btn{
-width:100%;
-padding:16px;
-border:none;
-border-radius:18px;
+.header{
 background:#1565ff;
-color:white;
-font-size:17px;
+padding:20px;
+font-size:24px;
 font-weight:bold;
-cursor:pointer;
-margin-top:10px;
 }
 
-.code-btn{
-width:100%;
-padding:14px;
-margin-top:12px;
-border:none;
-border-radius:16px;
+.container{
+padding:20px;
+}
+
+.card{
 background:#1e293b;
-color:#4da3ff;
-font-weight:bold;
-cursor:pointer;
+padding:15px;
+border-radius:15px;
+margin-bottom:15px;
 }
 
-.info{
-margin-top:22px;
-text-align:center;
-font-size:13px;
-color:#94a3b8;
-line-height:1.5;
+button{
+padding:12px;
+border:none;
+border-radius:10px;
+background:red;
+color:white;
+cursor:pointer;
 }
 
 </style>
@@ -133,92 +47,54 @@ line-height:1.5;
 
 <body>
 
-<div class="bg"></div>
+<script>
 
-<div class="login-box">
+const activeUser =
+localStorage.getItem("activeUser");
 
-<div class="logo">
+if(!activeUser){
+
+window.location.href =
+"login.html";
+
+}
+
+</script>
+
+<div class="header">
 icare.az
 </div>
 
-<div class="subtitle">
-Avtomobil elan platforması
+<div class="container">
+
+<div class="card">
+BMW M5 - 45000 AZN
 </div>
 
-<div class="input-group">
-<label>İstifadəçi adı</label>
-<input type="text" id="username" placeholder="Adınızı daxil edin">
+<div class="card">
+Mercedes E200 - 38000 AZN
 </div>
 
-<div class="input-group">
-<label>Kod</label>
-<input type="password" id="code" placeholder="Kod daxil edin">
-</div>
-
-<button class="login-btn" onclick="login()">
-Daxil ol
+<button onclick="logout()">
+Çıxış et
 </button>
-
-<button class="code-btn" onclick="generateCode()">
-Kod al
-</button>
-
-<div class="info">
-Kod cihazda yadda saxlanılır.
-</div>
 
 </div>
 
 <script>
 
-function generateCode(){
+function logout(){
 
-const username=document.getElementById("username").value;
-
-if(!username){
-alert("İstifadəçi adı daxil edin");
-return;
-}
-
-const randomCode=Math.floor(1000 + Math.random()*9000);
-
-localStorage.setItem(
-"user_"+username,
-randomCode
+localStorage.removeItem(
+"activeUser"
 );
 
-alert("Kodunuz: " + randomCode);
-
-}
-
-function login(){
-
-const username=document.getElementById("username").value;
-const code=document.getElementById("code").value;
-
-const savedCode=localStorage.getItem(
-"user_"+username
-);
-
-if(code==savedCode){
-
-localStorage.setItem(
-"activeUser",
-username
-);
-
-window.location.href="index.html";
-
-}else{
-
-alert("Kod yanlışdır");
-
-}
+window.location.href =
+"login.html";
 
 }
 
 </script>
 
 </body>
-
 </html>
