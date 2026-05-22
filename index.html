@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+const supabase = window.supabase.createClient(
+"https://irwhnuywppwsfcluaelt.supabase.co",
+"sb_publishable_3-DgPo74tGElnm0G6qko5Q_8vBpS46M"
+);
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -404,7 +409,7 @@ document.getElementById("modal")
 
 }
 
-function addCar(){
+async function addCar(){
 
 const brand =
 document.getElementById("brand").value;
@@ -436,7 +441,10 @@ document.getElementById("phone").value;
 const image =
 document.getElementById("image").value;
 
-const car = {
+await supabase
+.from("cars")
+.insert([
+{
 brand,
 model,
 year,
@@ -447,8 +455,15 @@ seats,
 location,
 phone,
 image
-};
+}
+]);
 
+loadCars();
+
+document.getElementById("modal")
+.style.display="none";
+
+}
 let cars =
 JSON.parse(localStorage.getItem("cars"))
 || [];
@@ -459,26 +474,20 @@ localStorage.setItem(
 "cars",
 JSON.stringify(cars)
 );
+async function loadCars(){
 
-loadCars();
-
-document.getElementById("modal")
-.style.display="none";
-
-}
-
-function loadCars(){
+const { data } =
+await supabase
+.from("cars")
+.select("*")
+.order("id",{ascending:false});
 
 const cards =
 document.getElementById("cards");
 
 cards.innerHTML="";
 
-let cars =
-JSON.parse(localStorage.getItem("cars"))
-|| [];
-
-cars.reverse().forEach(car=>{
+data.forEach(car=>{
 
 cards.innerHTML += `
 
@@ -516,22 +525,6 @@ ${car.brand} ${car.model}
 📞 ${car.phone}
 </div>
 
-<div class="actions">
-
-<button class="favorite">
-❤️
-</button>
-
-<button class="share">
-🔗
-</button>
-
-<button class="message">
-💬
-</button>
-
-</div>
-
 </div>
 
 </div>
@@ -541,8 +534,6 @@ ${car.brand} ${car.model}
 });
 
 }
-
-loadCars();
 
 </script>
 
