@@ -97,11 +97,27 @@ type="text"
 id="username"
 placeholder="İstifadəçi adı">
 
+<div style="position:relative;">
+
 <input
 type="password"
 id="password"
-placeholder="Kod">
+placeholder="Kod"
+style="padding-right:50px;">
 
+<span
+onclick="togglePassword()"
+style="
+position:absolute;
+right:15px;
+top:15px;
+cursor:pointer;
+color:white;
+font-size:18px;">
+👁
+</span>
+
+</div>
 <button onclick="login()">
 Daxil ol
 </button>
@@ -148,6 +164,7 @@ alert("Qeydiyyat tamamlandı");
 }
 
 function login(){
+  
 
 const username =
 document.getElementById("username").value;
@@ -175,7 +192,22 @@ alert("İstifadəçi adı və ya kod səhvdir");
 }
 
 }
+function togglePassword(){
 
+const password =
+document.getElementById("password");
+
+if(password.type === "password"){
+
+password.type = "text";
+
+}else{
+
+password.type = "password";
+
+}
+
+}
 </script>
 
 </body>
